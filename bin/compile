@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
 # bin/compile <build-dir> <cache-dir> <env-dir>
 
+# Write debug info to a file in the build dir
+echo "-----> Debug: AppSignal buildpack compile script starting at $(date)" > "$1/appsignal-buildpack-compile.log"
+echo "-----> Debug: Build dir is $1" >> "$1/appsignal-buildpack-compile.log"
+echo "-----> Debug: Cache dir is $2" >> "$1/appsignal-buildpack-compile.log"
+echo "-----> Debug: Env dir is $3" >> "$1/appsignal-buildpack-compile.log"
+echo "-----> Debug: Current directory is $(pwd)" >> "$1/appsignal-buildpack-compile.log"
+echo "-----> Debug: Environment variables:" >> "$1/appsignal-buildpack-compile.log"
+env >> "$1/appsignal-buildpack-compile.log"
+
 # Fail fast
 set -e
 set -o pipefail

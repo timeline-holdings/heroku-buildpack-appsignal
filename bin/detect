@@ -1,4 +1,21 @@
 #!/usr/bin/env bash
 # bin/detect <build-dir>
 
-echo "AppSignal Collector" && exit 0
+# Basic system info
+echo "-----> Debug: Detect script starting" > /tmp/appsignal-detect.log 2>&1
+echo "-----> Debug: Date: $(date)" >> /tmp/appsignal-detect.log 2>&1
+echo "-----> Debug: PWD: $(pwd)" >> /tmp/appsignal-detect.log 2>&1
+echo "-----> Debug: Build dir: $1" >> /tmp/appsignal-detect.log 2>&1
+echo "-----> Debug: Script path: $0" >> /tmp/appsignal-detect.log 2>&1
+echo "-----> Debug: Script exists: $([ -f "$0" ] && echo 'yes' || echo 'no')" >> /tmp/appsignal-detect.log 2>&1
+echo "-----> Debug: Script executable: $([ -x "$0" ] && echo 'yes' || echo 'no')" >> /tmp/appsignal-detect.log 2>&1
+echo "-----> Debug: Script contents:" >> /tmp/appsignal-detect.log 2>&1
+cat "$0" >> /tmp/appsignal-detect.log 2>&1
+
+# Try to write to build dir as well
+echo "-----> Debug: Detect script starting" > "$1/appsignal-detect.log" 2>&1
+echo "-----> Debug: Date: $(date)" >> "$1/appsignal-detect.log" 2>&1
+
+# Always return true
+echo "AppSignal Collector"
+exit 0
