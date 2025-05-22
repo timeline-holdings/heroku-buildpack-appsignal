@@ -86,12 +86,12 @@ echo "test-key-123" > "$ENV_DIR/APPSIGNAL_PUSH_API_KEY"
 run_test "compile with valid API key" "/buildpack/bin/compile" 0 "AppSignal collector installed successfully"
 
 # Simulate dyno boot (source the profile.d script) so that the collector is started
-echo "Simulating dyno boot (sourcing .profile.d/appsignal.sh) to start the collector..."
-if [ -f "$BUILD_DIR/.profile.d/appsignal.sh" ]; then
-  source "$BUILD_DIR/.profile.d/appsignal.sh"
-  echo -e "${GREEN}✓ Sourced .profile.d/appsignal.sh (simulating dyno boot)${NC}"
+echo "Simulating dyno boot (sourcing .profile.d/appsignal-buildpack-collector.sh) to start the collector..."
+if [ -f "$BUILD_DIR/.profile.d/appsignal-buildpack-collector.sh" ]; then
+  source "$BUILD_DIR/.profile.d/appsignal-buildpack-collector.sh"
+  echo -e "${GREEN}✓ Sourced .profile.d/appsignal-buildpack-collector.sh (simulating dyno boot)${NC}"
 else
-  echo -e "${RED}✗ .profile.d/appsignal.sh not found (simulation failed)${NC}"
+  echo -e "${RED}✗ .profile.d/appsignal-buildpack-collector.sh not found (simulation failed)${NC}"
   exit 1
 fi
 
@@ -113,9 +113,9 @@ set -e  # Re-enable exit on error
 
 # Verify generated files
 echo "Verifying generated files..."
-if [ -f "$BUILD_DIR/.profile.d/appsignal.sh" ]; then
+if [ -f "$BUILD_DIR/.profile.d/appsignal-buildpack-collector.sh" ]; then
     echo -e "${GREEN}✓ Profile.d script created${NC}"
-    if grep -q "appsignal-collector start" "$BUILD_DIR/.profile.d/appsignal.sh"; then
+    if grep -q "appsignal-collector start" "$BUILD_DIR/.profile.d/appsignal-buildpack-collector.sh"; then
         echo -e "${GREEN}✓ Profile.d script contains correct collector start command${NC}"
     else
         echo -e "${RED}✗ Profile.d script missing collector start command${NC}"

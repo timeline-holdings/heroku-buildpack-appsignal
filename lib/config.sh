@@ -43,7 +43,7 @@ start_collector() {
 # Create the profile script that will start the collector
 create_profile_script() {
   local build_dir="${BUILD_DIR:-/app}"
-  local profile_script="${build_dir}/.profile.d/appsignal.sh"
+  local profile_script="${build_dir}/.profile.d/appsignal-buildpack-collector.sh"
 
   mkdir -p "$(dirname "$profile_script")"
   cat << 'EOF' > "$profile_script"
