@@ -1,0 +1,31 @@
+FROM --platform=linux/amd64 heroku/heroku:22
+
+# Install required packages
+USER root
+RUN apt-get update && apt-get install -y \
+    curl \
+    gpg \
+    binutils \
+    tar \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create directory for the collector
+WORKDIR /collector
+
+# Download and install GPG key
+RUN curl -fsSL "https://packages.buildkite.com/appsignal/collector-ubuntu-jammy/gpgkey" | gpg --dearmor -o /etc/apt/keyrings/appsignal_collector-ubuntu-jammy-archive-keyring.gpg
+
+# Add repository
+RUN printf "deb [signed-by=/etc/apt/keyrings/appsignal_collector-ubuntu-jammy-archive-keyring.gpg] https://packages.buildkite.com/appsignal/collector-ubuntu-jammy/any/ any main\ndeb-src [signed-by=/etc/apt/keyrings/appsignal_collector-ubuntu-jammy-archive-keyring.gpg] https://packages.buildkite.com/appsignal/collector-ubuntu-jammy/any/ any main\n" > /etc/apt/sources.list.d/buildkite-appsignal-collector-ubuntu-jammy.list
+
+# Update and download the package, then extract the binary
+RUN apt-get update && \
+    apt-get download appsignal-collector=0.6.2 || true && \
+    if [ ! -f appsignal-collector_0.6.2_amd64.deb ]; then cp /var/cache/apt/archives/appsignal-collector_0.6.2_amd64.deb .; fi && \
+    ar x appsignal-collector_0.6.2_amd64.deb && \
+    tar xf data.tar.gz && \
+    cp usr/bin/appsignal-collector /collector/ && \
+    chmod +x /collector/appsignal-collector
+
+# The binary will be available at /collector/appsignal-collector
+# We'll copy this to our buildpack's bin directory

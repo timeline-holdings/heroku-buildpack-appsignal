@@ -1,4 +1,4 @@
-.PHONY: test clean
+.PHONY: test clean fetch_collector
 
 test:
 	@echo "Building Docker image (using test/Dockerfile) and running the test suite..."
@@ -8,3 +8,7 @@ test:
 clean:
 	@echo "Cleaning up Docker test image..."
 	docker rmi appsignal-buildpack-test || true
+
+fetch_collector:
+	@echo "Fetching AppSignal collector (using lib/fetch-collector.sh) ..."
+	./lib/fetch-collector.sh
