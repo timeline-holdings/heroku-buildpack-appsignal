@@ -46,13 +46,18 @@ create_profile_script() {
   local profile_script="${build_dir}/.profile.d/appsignal.sh"
 
   mkdir -p "$(dirname "$profile_script")"
-  echo '#!/usr/bin/env bash' > "$profile_script"
-  echo '' >> "$profile_script"
-  echo '# Source the config library' >> "$profile_script"
-  echo 'source "/app/.appsignal/lib/config.sh"' >> "$profile_script"
-  echo '' >> "$profile_script"
-  echo '# Start the collector' >> "$profile_script"
-  echo 'start_collector' >> "$profile_script"
+  cat << 'EOF' > "$profile_script"
+#!/usr/bin/env bash
+
+# Source the config library
+source "/app/.appsignal/lib/config.sh"
+
+# Only start the collector if this is not an interactive shell
+if [[ ! $- =~ i ]]; then
+  # Start the collector
+  start_collector
+fi
+EOF
 
   chmod +x "$profile_script"
 }
