@@ -1,3 +1,0 @@
-# AppSignal collector package
-:repo:deb https://packages.buildkite.com/appsignal/collector-ubuntu-jammy/any/ any main
-appsignal-collector
