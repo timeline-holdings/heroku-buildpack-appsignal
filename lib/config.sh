@@ -52,8 +52,8 @@ create_profile_script() {
 # Source the config library
 source "/app/.appsignal/lib/config.sh"
 
-# Only start the collector if this is not an interactive shell
-if [[ ! $- =~ i ]]; then
+# Only start the collector if we're in a real dyno (DYNO is set)
+if [ -n "$DYNO" ]; then
   # Start the collector
   start_collector
 fi
